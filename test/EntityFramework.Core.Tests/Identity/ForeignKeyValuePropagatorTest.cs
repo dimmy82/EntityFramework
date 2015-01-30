@@ -183,7 +183,7 @@ namespace Microsoft.Data.Entity.Tests.Identity
 
         private static IServiceProvider CreateContextServices(IModel model = null)
         {
-            return TestHelpers.CreateContextServices(model ?? BuildModel());
+            return TestHelpers.Instance.CreateContextServices(model ?? BuildModel());
         }
 
         private static async Task PropagateValue(
@@ -272,7 +272,7 @@ namespace Microsoft.Data.Entity.Tests.Identity
         private static IModel BuildModel()
         {
             var model = new Model();
-            var builder = TestHelpers.CreateConventionBuilder(model);
+            var builder = TestHelpers.Instance.CreateConventionBuilder(model);
 
             builder.Entity<Product>(b =>
             {

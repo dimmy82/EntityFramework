@@ -27,7 +27,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact]
         public void Each_context_gets_new_scoped_services()
         {
-            var serviceProvider = TestHelpers.CreateServiceProvider();
+            var serviceProvider = TestHelpers.Instance.CreateServiceProvider();
 
             IServiceProvider contextServices;
             using (var context = new DbContext(serviceProvider))
@@ -61,7 +61,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact]
         public void Each_context_gets_new_scoped_services_with_explicit_config()
         {
-            var serviceProvider = TestHelpers.CreateServiceProvider();
+            var serviceProvider = TestHelpers.Instance.CreateServiceProvider();
 
             var options = new DbContextOptions();
 
@@ -103,7 +103,7 @@ namespace Microsoft.Data.Entity.Tests
                 .AddScoped<StateManager, FakeStateManager>()
                 .AddScoped<ChangeDetector, FakeChangeDetector>();
 
-            var serviceProvider = TestHelpers.CreateServiceProvider(services);
+            var serviceProvider = TestHelpers.Instance.CreateServiceProvider(services);
 
             var options = new DbContextOptions();
 
@@ -126,7 +126,7 @@ namespace Microsoft.Data.Entity.Tests
                 .AddScoped<StateManager, FakeStateManager>()
                 .AddScoped<ChangeDetector, FakeChangeDetector>();
 
-            var serviceProvider = TestHelpers.CreateServiceProvider(services);
+            var serviceProvider = TestHelpers.Instance.CreateServiceProvider(services);
 
             var options = new DbContextOptions();
 
@@ -153,7 +153,7 @@ namespace Microsoft.Data.Entity.Tests
                 .AddScoped<StateManager, FakeStateManager>()
                 .AddScoped<ChangeDetector, FakeChangeDetector>();
 
-            var serviceProvider = TestHelpers.CreateServiceProvider(services);
+            var serviceProvider = TestHelpers.Instance.CreateServiceProvider(services);
 
             var options = new DbContextOptions();
 
@@ -181,7 +181,7 @@ namespace Microsoft.Data.Entity.Tests
             var services = new ServiceCollection()
                 .AddScoped<StateManager, FakeStateManager>();
 
-            var serviceProvider = TestHelpers.CreateServiceProvider(services);
+            var serviceProvider = TestHelpers.Instance.CreateServiceProvider(services);
 
             using (var context = new DbContext(serviceProvider))
             {
@@ -207,7 +207,7 @@ namespace Microsoft.Data.Entity.Tests
             var services = new ServiceCollection()
                 .AddScoped(_ => stateManagerMock.Object);
 
-            var serviceProvider = TestHelpers.CreateServiceProvider(services);
+            var serviceProvider = TestHelpers.Instance.CreateServiceProvider(services);
 
             using (var context = new DbContext(serviceProvider))
             {
@@ -284,7 +284,7 @@ namespace Microsoft.Data.Entity.Tests
             Func<DbContext, Category, EntityEntry<Category>> categoryAdder,
             Func<DbContext, Product, EntityEntry<Product>> productAdder, EntityState expectedState)
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category1 = new Category { Id = 1, Name = "Beverages" };
                 var category2 = new Category { Id = 2, Name = "Foods" };
@@ -356,7 +356,7 @@ namespace Microsoft.Data.Entity.Tests
             Func<DbContext, Category[], IReadOnlyList<EntityEntry<Category>>> categoryAdder,
             Func<DbContext, Product[], IReadOnlyList<EntityEntry<Product>>> productAdder, EntityState expectedState)
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category1 = new Category { Id = 1, Name = "Beverages" };
                 var category2 = new Category { Id = 2, Name = "Foods" };
@@ -429,7 +429,7 @@ namespace Microsoft.Data.Entity.Tests
             Func<DbContext, IReadOnlyList<EntityEntry<Category>>> categoryAdder,
             Func<DbContext, IReadOnlyList<EntityEntry<Product>>> productAdder, EntityState expectedState)
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 Assert.Empty(categoryAdder(context));
                 Assert.Empty(productAdder(context));
@@ -470,7 +470,7 @@ namespace Microsoft.Data.Entity.Tests
             Func<DbContext, object, EntityEntry> categoryAdder,
             Func<DbContext, object, EntityEntry> productAdder, EntityState expectedState)
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category1 = new Category { Id = 1, Name = "Beverages" };
                 var category2 = new Category { Id = 2, Name = "Foods" };
@@ -542,7 +542,7 @@ namespace Microsoft.Data.Entity.Tests
             Func<DbContext, object[], IReadOnlyList<EntityEntry>> categoryAdder,
             Func<DbContext, object[], IReadOnlyList<EntityEntry>> productAdder, EntityState expectedState)
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category1 = new Category { Id = 1, Name = "Beverages" };
                 var category2 = new Category { Id = 2, Name = "Foods" };
@@ -615,7 +615,7 @@ namespace Microsoft.Data.Entity.Tests
             Func<DbContext, IReadOnlyList<EntityEntry>> categoryAdder,
             Func<DbContext, IReadOnlyList<EntityEntry>> productAdder, EntityState expectedState)
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 Assert.Empty(categoryAdder(context));
                 Assert.Empty(productAdder(context));
@@ -636,7 +636,7 @@ namespace Microsoft.Data.Entity.Tests
 
         private static void TrackEntitiesWithKeyGenerationTest(Func<DbContext, TheGu, TheGu> adder)
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var gu1 = new TheGu { ShirtColor = "Red" };
                 var gu2 = new TheGu { ShirtColor = "Still Red" };
@@ -699,7 +699,7 @@ namespace Microsoft.Data.Entity.Tests
 
         private void ChangeStateWithMethod(Action<DbContext, object> action, EntityState initialState, EntityState expectedState)
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var entity = new Category { Name = "Beverages" };
                 var entry = context.Entry(entity);
@@ -715,7 +715,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_principal_first_fully_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite", Category = category };
@@ -744,7 +744,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_dependent_first_fully_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite", Category = category };
@@ -771,7 +771,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_principal_first_collection_not_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite", Category = category };
@@ -798,7 +798,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_dependent_first_collection_not_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite", Category = category };
@@ -825,7 +825,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_principal_first_reference_not_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite" };
@@ -854,7 +854,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_dependent_first_reference_not_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite" };
@@ -881,7 +881,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_principal_first_fully_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite", Category = category };
@@ -910,7 +910,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_dependent_first_fully_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite", Category = category };
@@ -937,7 +937,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_principal_first_collection_not_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite", Category = category };
@@ -964,7 +964,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_dependent_first_collection_not_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite", Category = category };
@@ -991,7 +991,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_principal_first_reference_not_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite" };
@@ -1020,7 +1020,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_dependent_first_reference_not_fixed_up()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category = new Category { Id = 1, Name = "Beverages" };
                 var product = new Product { Id = 1, CategoryId = 7, Name = "Marmite" };
@@ -1047,7 +1047,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_principal_first_fully_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1080,7 +1080,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_dependent_first_fully_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1111,7 +1111,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_principal_first_collection_not_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1142,7 +1142,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_dependent_first_collection_not_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1173,7 +1173,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_principal_first_reference_not_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1206,7 +1206,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_attach_with_inconsistent_FK_dependent_first_reference_not_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1237,7 +1237,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_principal_first_fully_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1270,7 +1270,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_dependent_first_fully_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1301,7 +1301,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_principal_first_collection_not_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1332,7 +1332,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_dependent_first_collection_not_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1363,7 +1363,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_principal_first_reference_not_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1396,7 +1396,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact] // Issue #1246
         public void Can_set_set_to_Unchanged_with_inconsistent_FK_dependent_first_reference_not_fixed_up_with_tracked_FK_match()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var category7 = context.Attach(new Category { Id = 7, Products = new List<Product>() }).Entity;
 
@@ -1427,7 +1427,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact]
         public void Context_can_build_model_using_DbSet_properties()
         {
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider()))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider()))
             {
                 Assert.Equal(
                     new[] { typeof(Category).FullName, typeof(Product).FullName, typeof(TheGu).FullName },
@@ -1461,7 +1461,7 @@ namespace Microsoft.Data.Entity.Tests
 
             var options = new DbContextOptions().UseModel(model);
 
-            using (var context = new EarlyLearningCenter(TestHelpers.CreateServiceProvider(), options))
+            using (var context = new EarlyLearningCenter(TestHelpers.Instance.CreateServiceProvider(), options))
             {
                 Assert.Equal(
                     new[] { typeof(TheGu).FullName },
@@ -1774,7 +1774,7 @@ namespace Microsoft.Data.Entity.Tests
             var services = new ServiceCollection()
                 .AddInstance(modelSource);
 
-            var provider = TestHelpers.CreateServiceProvider(services);
+            var provider = TestHelpers.Instance.CreateServiceProvider(services);
 
             using (var context = new EarlyLearningCenter(provider))
             {
@@ -1790,7 +1790,7 @@ namespace Microsoft.Data.Entity.Tests
             var services = new ServiceCollection()
                 .AddSingleton<IModelSource, FakeModelSource>();
 
-            var provider = TestHelpers.CreateServiceProvider(services);
+            var provider = TestHelpers.Instance.CreateServiceProvider(services);
 
             using (var context = new EarlyLearningCenter(provider))
             {
@@ -1806,7 +1806,7 @@ namespace Microsoft.Data.Entity.Tests
             var services = new ServiceCollection()
                 .AddScoped<StateManager, FakeStateManager>();
 
-            var provider = TestHelpers.CreateServiceProvider(services);
+            var provider = TestHelpers.Instance.CreateServiceProvider(services);
 
             using (var context = new EarlyLearningCenter(provider))
             {
@@ -2295,7 +2295,7 @@ namespace Microsoft.Data.Entity.Tests
         [InlineData(true)]
         public async Task SaveChanges_calls_DetectChanges_by_default(bool async)
         {
-            var provider = TestHelpers.CreateServiceProvider();
+            var provider = TestHelpers.Instance.CreateServiceProvider();
 
             using (var context = new ButTheHedgehogContext(provider))
             {
@@ -2326,7 +2326,7 @@ namespace Microsoft.Data.Entity.Tests
         [InlineData(true)]
         public async Task Auto_DetectChanges_for_SaveChanges_can_be_switched_off(bool async)
         {
-            var provider = TestHelpers.CreateServiceProvider();
+            var provider = TestHelpers.Instance.CreateServiceProvider();
 
             using (var context = new ButTheHedgehogContext(provider))
             {
@@ -2373,7 +2373,7 @@ namespace Microsoft.Data.Entity.Tests
         [InlineData(true)]
         public void Entry_calls_DetectChanges_by_default(bool useGenericOverload)
         {
-            using (var context = new ButTheHedgehogContext(TestHelpers.CreateServiceProvider()))
+            using (var context = new ButTheHedgehogContext(TestHelpers.Instance.CreateServiceProvider()))
             {
                 var entry = context.Attach(new Product { Id = 1, Name = "Little Hedgehogs" });
 
@@ -2399,7 +2399,7 @@ namespace Microsoft.Data.Entity.Tests
         [InlineData(true)]
         public void Auto_DetectChanges_for_Entry_can_be_switched_off(bool useGenericOverload)
         {
-            using (var context = new ButTheHedgehogContext(TestHelpers.CreateServiceProvider()))
+            using (var context = new ButTheHedgehogContext(TestHelpers.Instance.CreateServiceProvider()))
             {
                 context.ChangeTracker.AutoDetectChangesEnabled = false;
 
@@ -2425,7 +2425,7 @@ namespace Microsoft.Data.Entity.Tests
         [Fact]
         public async Task Add_Attach_Remove_Update_do_not_call_DetectChanges()
         {
-            var provider = TestHelpers.CreateServiceProvider(new ServiceCollection().AddScoped<ChangeDetector, ChangeDetectorProxy>());
+            var provider = TestHelpers.Instance.CreateServiceProvider(new ServiceCollection().AddScoped<ChangeDetector, ChangeDetectorProxy>());
             using (var context = new ButTheHedgehogContext(provider))
             {
                 var changeDetector = (ChangeDetectorProxy)((IDbContextServices)context).ScopedServiceProvider
